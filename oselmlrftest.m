@@ -1,4 +1,4 @@
-function [ er, bad, testing_time ] = elmlrftest( net, x, y, opts )
+function [ er, bad, testing_time ] = oselmlrftest( net, x, y, opts )
 %ELMLRFTEST Test ELM-LRF
 %   
 
@@ -17,8 +17,9 @@ testing_time = cputime;
 
 %forward
 % model
-elmlrff = str2func(['@elmlrff_' opts.model]);
-net = elmlrff(net, x);
+elmlrff = str2func(['@oselmlrff_' opts.model]);
+net = elmlrff(net, x, opts);
+clear x
 
 predT = net.h * net.BETA; % (N, K(d-r+1)) * (K(d-r+1),nClasses)
 

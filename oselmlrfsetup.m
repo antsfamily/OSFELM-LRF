@@ -1,4 +1,4 @@
-function [ net ] = elmlrfsetup( net, x, model )
+function [ net ] = oselmlrfsetup( net, x, opts )
 %ELMLRFSETUP Setup ELM-LRF
 %   
 %==========================================================================
@@ -14,6 +14,10 @@ function [ net ] = elmlrfsetup( net, x, model )
 
 [mapsize(1),mapsize(2),~,inputmaps] = size(x);% H-by-W-by-nChannel-by-nImages
 % mapsize = size(squeeze(x(:, :, 1)));
+model = opts.model;
+if ~isempty(opts.randseed)
+    randn('seed', opts.randseed);
+end
 
 for l = 1 : numel(net.layers)   %  layer
     if strcmp(net.layers{l}.type, 's')
@@ -66,6 +70,7 @@ end
 
 
 net.BETA = []; % weight beta at the ELM last layer.
+net.P = []; % for Onile Learning
 
 end
 

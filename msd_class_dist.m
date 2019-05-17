@@ -22,6 +22,12 @@ for i = 1:N
     num(k) = num(k) + 1;
     s(:, k) = s(:, k) + x(:, i);
 end
+% 
+% [C, U] = fcm(x', 10, [2.0, 1000, 1e-8, 1]);
+% 
+% [U, centers] = my_fuzzyCmeans(x', 10);
+
+% [IDX, C] = kmeans(x', 10);
 
 s = bsxfun(@rdivide, s, num);
 

@@ -1,4 +1,4 @@
-function [ net ] = elmlrff_sequential( net, x )
+function [ net ] = oselmlrff_sequential( net, x, opts)
 %ELMLRFF_SEQUENTIAL ELM-LRF forward in sequential
 %   see './doc/model_sequential.png'
 %==========================================================================
@@ -29,9 +29,14 @@ for l = 2:numLayers %  for each layer
             for i = 1 : inputmaps   %  for each input map
                 %  convolve with corresponding kernel and add to temp output map
                 z = z + convn(net.layers{l - 1}.f{i}, net.layers{l}.a{i}{j}, 'valid');
+%                 z = z + convn(net.layers{l - 1}.f{i}, net.layers{l}.a{i}{j}, 'same');
             end
             
             % elm-lrf no bias no activation function
+            if ~isempty(opts.activation)
+                act = str2func(opts.activation);
+                z = act(z);
+            end
             net.layers{l}.f{j} = z;
         end
         %  set number of input maps to this layers number of outputmaps
@@ -41,11 +46,15 @@ for l = 2:numLayers %  for each layer
         for j = 1 : inputmaps
             e = fix(net.layers{l}.scale/2);
             % pad 0 and square   compute h
-            z = convn(padarray(net.layers{l-1}.f{j}, [e, e]).^2,  ones(net.layers{l}.scale),  'valid');   %  !! replace with variable
+            z = convn(net.layers{l-1}.f{j}.^2,  ones(net.layers{l}.scale),  'same');
+%             z = convn(padarray(net.layers{l-1}.f{j}, [e, e]).^2,  ones(net.layers{l}.scale),  'valid');   %  !! replace with variable
+%             z = convn(padarray(net.layers{l-1}.f{j}, [e, e]).^2,  ones(net.layers{l}.scale),  'same');   %  !! replace with variable
             net.layers{l}.f{j} = sqrt(z);
         end
     end
 end
+
+clear x
 
 %  concatenate all end layer feature maps into vector
 net.h = [];
@@ -56,5 +65,6 @@ end
 % %  feedforward into output perceptrons
 % net.o = sigm(net.ffW * net.fv + repmat(net.ffb, 1, size(net.fv, 2)));
 net.h = net.h';
+% net.h = relu(net.h);
 end
 

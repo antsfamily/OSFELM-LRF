@@ -1,4 +1,4 @@
-function [ net, er, training_time ] = elmlrftrain( net, x, y, opts )
+function [ net, er, training_time ] = oselmlrftrain_Initial( net, x, y, opts )
 %ELMLRFTRAIN Train ELM-LRF
 %   
 % if N <= K*(d-r+1)^2   beta=H'*pinv(I/C+H*H')*T
@@ -16,6 +16,12 @@ function [ net, er, training_time ] = elmlrftrain( net, x, y, opts )
 %==========================================================================
 %
 
+fprintf('\n-------Initial Training-------\n');
+
+if ~isempty(opts.randseed)
+    randn('seed', opts.randseed);
+end
+
 % timing
 training_time = cputime;
 
@@ -31,13 +37,13 @@ numBatches = a + b*1;
 H = [];
 
 % model
-elmlrff = str2func(['@elmlrff_' opts.model]);
+elmlrff = str2func(['@oselmlrff_' opts.model]);
 
 for l = 1 : numBatches
     idx = (l-1)*batchSize+1 : min(l*batchSize, N);
     batch_x = x( :, :, idx, : );
     % Compute h :batch
-    net = elmlrff(net, batch_x);
+    net = elmlrff(net, batch_x, opts);
     % Combine H
     H = cat(1, H, net.h);
 
@@ -51,33 +57,29 @@ clear x batch_x kk idx idxkk;
 T = double(y); % nSamples-nClasses
 clear y;
 
-% U = diag(opts.u);
-% H = U*H;
-% T = U*T;
-if opts.isUseClassDistFuzzy > 0
-    H = bsxfun(@times, opts.u, H);
-    T = bsxfun(@times, opts.u, T);
-end
+[N, L] = size(H);
 
-% Compute Beta: output weight
-if size(H,1) <= size(H,2)  % H is [N, K*(d-r+1)^2]
-    net.BETA = H' * ((eye(N,N)/opts.C + H*H') \ T); % A*inv(B)*C  --> A*(B\C)
-else
-    net.BETA = (eye(size(H,2))/opts.C +H'*H) \ (H'*T); % inv(A)*B  --> A\B
-end
-
-if opts.isUseTrainErrorFuzzy > 0
-    [ u ] = msd_train_error( abs(H * net.BETA - T) );
-    H = bsxfun(@times, u, H);
-    T = bsxfun(@times, u, T);
-
-    % ReCompute Beta: output weight
-    if size(H,1) <= size(H,2)  % H is [N, K*(d-r+1)^2]
-        net.BETA = H' * ((eye(N,N)/opts.C + H*H') \ T); % A*inv(B)*C  --> A*(B\C)
+if opts.isUseRandErrorFuzzy > 0
+    if N <= L
+        I = diag(1./rand(N,1));
     else
-        net.BETA = (eye(size(H,2))/opts.C +H'*H) \ (H'*T); % inv(A)*B  --> A\B
+        I = diag(1./rand(L,1));
     end
+else
+        if N <= L
+            I = eye(N, N);
+        else
+            I = eye(L, L);
+        end
 end
+
+if N <= L  % H is [N, K*(d-r+1)^2]
+    net.BETA = H' * ((I/opts.C + H*H') \ T); % A*inv(B)*C  --> A*(B\C)
+else
+    net.P = inv(I/opts.C + H'*H);
+    net.BETA = net.P * H' * T; 
+end
+
 
 [~, label0] = max(T, [], 2);
 [~, label] = max(H * net.BETA, [], 2);

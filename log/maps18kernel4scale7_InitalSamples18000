@@ -1,0 +1,155 @@
+
+>> demo_oselmlrf_NORB
+
+=======With C = 0.001000=======
+
+-------Initial Training-------
+
+Training error: 0.005000
+Training Time:1941.170000s
+
+Testing error: 0.048313
+Testing Time:75.390000s
+
+-------Online Training-------
+
+~~~~~~~Epoch 1
+
+Training error: 0.002346
+Training Time:3004.620000s
+
+Testing error: 0.041811
+Testing Time:75.290000s
+
+~~~~~~~Epoch 2
+
+Training error: 0.001481
+Training Time:3009.650000s
+
+Testing error: 0.040617
+Testing Time:76.260000s
+
+~~~~~~~Epoch 3
+
+Training error: 0.000947
+Training Time:3032.100000s
+
+Testing error: 0.040247
+Testing Time:75.390000s
+
+~~~~~~~Epoch 4
+
+Training error: 0.000700
+Training Time:3081.590000s
+
+Testing error: 0.040782
+Testing Time:75.340000s
+
+~~~~~~~Epoch 5
+
+Training error: 0.000617
+Training Time:2669.520000s
+
+Testing error: 0.041111
+Testing Time:72.370000s
+
+~~~~~~~Epoch 6
+
+Training error: 0.000494
+Training Time:2901.830000s
+
+Testing error: 0.041481
+Testing Time:75.360000s
+
+~~~~~~~Epoch 7
+
+Training error: 0.000370
+Training Time:2951.890000s
+
+Testing error: 0.042181
+Testing Time:76.230000s
+
+~~~~~~~Epoch 8
+
+Training error: 0.000288
+Training Time:2931.760000s
+
+Testing error: 0.042428
+Testing Time:71.920000s
+
+~~~~~~~Epoch 9
+
+Training error: 0.000206
+Training Time:2628.660000s
+
+Testing error: 0.043045
+Testing Time:72.560000s
+
+~~~~~~~Epoch 10
+
+Training error: 0.000165
+Training Time:2915.130000s
+
+Testing error: 0.043333
+Testing Time:75.450000s
+
+=======With C = 0.010000=======
+
+-------Initial Training-------
+
+Training error: 0.000278
+Training Time:1916.510000s
+
+Testing error: 0.041564
+Testing Time:78.550000s
+
+-------Online Training-------
+
+~~~~~~~Epoch 1
+
+Training error: 0.000041
+Training Time:2933.010000s
+
+Testing error: 0.045638
+Testing Time:75.460000s
+
+~~~~~~~Epoch 2
+
+Training error: 0.000041
+Training Time:2964.150000s
+
+Testing error: 0.048107
+Testing Time:74.650000s
+
+~~~~~~~Epoch 3
+
+Training error: 0.000041
+Training Time:2955.760000s
+
+Testing error: 0.049712
+Testing Time:74.690000s
+
+~~~~~~~Epoch 4
+
+Training error: 0.000041
+Training Time:2919.090000s
+
+Testing error: 0.051152
+Testing Time:74.900000s
+
+~~~~~~~Epoch 5
+
+Training error: 0.000000
+Training Time:2931.260000s
+
+Testing error: 0.052675
+Testing Time:75.610000s
+
+~~~~~~~Epoch 6
+
+Training error: 0.000000
+Training Time:2920.450000s
+
+Testing error: 0.053868
+Testing Time:75.260000s
+
